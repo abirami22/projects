@@ -1,0 +1,115 @@
+#OOPR-Assgn-27
+'''
+Created on May 26, 2019
+
+@author: abirami.m02
+'''
+#This class represents ThemePark
+class ThemePark:
+    #dict_of_games contains the game name as key, price/ride and points that can be earned by customer in a list as value
+    dict_of_games={"Game1":[35.5,5], "Game2":[40.0,6],"Game3":[120.0,10], "Game4":[60.0,7],"Game5":[25.0,4]}
+    @staticmethod
+    def validate_game(game_input):
+        pass
+        #Remove pass and write the logic here
+        #If game_input is present in ThemePark, return true. Else, return false.
+        for i in ThemePark.dict_of_games:
+            if game_input in i:
+                return True
+            else:
+                return False             
+    @staticmethod
+    def get_points(game_input):
+        pass
+        #Remove pass and write the logic here
+        #Return the points that can be earned for the given game_input.
+        points=0
+        for i in ThemePark.dict_of_games:
+            if game_input in i:
+                points=ThemePark.dict_of_games[i][1]
+        return points
+    @staticmethod
+    def get_amount(game_input):
+        #Remove pass and write the logic here
+        #Return the price/ride for the given game_input
+        amount=0
+        for i in ThemePark.dict_of_games:
+            if game_input in i:
+                amount=ThemePark.dict_of_games[i][0]
+        return amount
+
+#This class represents ticket
+class Ticket:
+    __ticket_count=200
+    def __init__(self):
+        self.__ticket_id=None
+        self.__ticket_amount=0
+    def generate_ticket_id(self):
+        #Remove pass and write the logic here
+        #Auto-generate ticket_id starting from 201
+        self.__ticket_id+=Ticket.__ticket_count
+    def calculate_amount(self, list_of_games):
+        #Remove pass and write the logic here
+        '''Validate the games in the list_of_games.
+        If all games are valid, calculate total ticket amount and assign it to attribute, ticket_amount and return true. Else, return false'''
+        for i in list_of_games:
+            if i in ThemePark.dict_of_games:
+                self.__ticket_amount+=ThemePark.dict_of_games[i][0]
+                return True
+            else:
+                self.__ticket_amount=0
+                return False
+    def get_ticket_id(self):
+        return self.__ticket_id
+    def get_ticket_amount(self):
+        return self.__ticket_amount
+
+class Customer:
+    #Remove pass and implement class Customer here
+    def __init__(self,name,list_of_games):
+        self.__name=name
+        self.__list_of_games=list_of_games
+        self.__ticket=Ticket
+        self.__points_earned=0
+        self.__food_coupon="No"
+    def play_game(self):
+        for i in self.__list_of_games:
+            self.__points_earned+=ThemePark.get_points(i)
+            if i=="Game3":
+                self.__list_of_games.append("Game2")
+                self.__points_earned+=ThemePark.get_points("Game2")
+    def update_food_coupon(self):
+        for i in self.__list_of_games:
+            if i=="Game4" and self.__points_earned>15:
+                self.__food_coupon="Yes"
+    def book_ticket(self):
+        ticket_amount=0
+        if self.__ticket.calculate_amount( self.__ticket, self.__list_of_games):
+            self.__ticket.generate_ticket_id(self)
+            self.play_game()
+            self.update_food_coupon()
+            return True
+        else:
+            return False
+    def get_name(self):
+        return self.__name
+    def get_list_of_games(self):
+        return self.__list_of_games
+    def get_ticket(self):
+        return self.__ticket
+    def get_points_earned(self):
+        return self.__points_earned
+    def get_food_coupon(self):
+        return self.__food_coupon
+
+'''Represent customers and display all details of the customer, if he is able to book the ticket and play the game. Else, display appropriate error message '''
+t=ThemePark()
+c=Customer("John",["Game1","Game3"])
+t=Ticket()
+if c.book_ticket() and c.play_game():
+    print(c.get_name())
+    print(c.get_list_of_games())
+else:
+    print("invalid")
+    
+   
